@@ -65,8 +65,6 @@ class UserController extends Controller
         ]);
     }
     
-
-
     public function update(Request $request, $id){
 
         $user = User::where('id', $id)->whereNull('deleted_at')->first();
@@ -102,7 +100,6 @@ class UserController extends Controller
         ]);
     }
     
-
     public function hapus($id) {
         $user = User::where('id',$id)->whereNull('deleted_at')->firstOrFail();
         $user->deleted_at = now();
@@ -114,4 +111,5 @@ class UserController extends Controller
         auth('api')->logout();
         return response()->json(['status'=>'success','message'=>'Logout berhasil']);
     }
+
 }

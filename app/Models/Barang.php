@@ -3,21 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes; 
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\PembelianDetail;
 
 class Barang extends Model
 {
     use SoftDeletes;
 
     protected $table = 'tbl_barang';
-
     protected $primaryKey = 'id';
-    
     public $incrementing = true;
-
     public $timestamps = true;
-
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
     protected $fillable = [
         'kode_barang',
@@ -29,6 +25,8 @@ class Barang extends Model
         'deleted_at',
     ];
 
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
+
     protected $casts = [
         'harga' => 'decimal:2',
         'created_at' => 'datetime',
@@ -36,8 +34,10 @@ class Barang extends Model
         'deleted_at' => 'datetime',
     ];
 
-    public function pembelianDetails()
-    {
+    public function pembelianDetails(){
+
         return $this->hasMany(PembelianDetail::class, 'kode_barang', 'id');
     }
+
+    
 }

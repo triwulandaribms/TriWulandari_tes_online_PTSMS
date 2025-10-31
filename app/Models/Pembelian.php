@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes; 
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\PembelianDetail;
 
 class Pembelian extends Model
 {
     use SoftDeletes;
-    
-    protected $table = 'tbl_pembelian';
 
+    protected $table = 'tbl_pembelian';
     protected $primaryKey = 'id';
     public $incrementing = true;
     public $timestamps = true;
@@ -33,8 +33,9 @@ class Pembelian extends Model
         'deleted_at' => 'datetime',
     ];
 
-    public function details()
-    {
-        return $this->hasMany(PembelianDetail::class, 'pembelian_id', 'id');
+    public function details(){
+        
+        return $this->hasMany(PembelianDetail::class, 'pembelian_id', 'id')
+                    ->whereNull('deleted_at');
     }
 }

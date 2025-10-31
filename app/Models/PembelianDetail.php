@@ -3,25 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes; 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Barang;
 use App\Models\Pembelian;
 
-
 class PembelianDetail extends Model
 {
-
     use SoftDeletes;
-    
-    protected $table = 'tbl_pembelian_detail';
 
+    protected $table = 'tbl_pembelian_detail';
     protected $primaryKey = 'id';
     public $incrementing = true;
     public $timestamps = true;
 
     protected $fillable = [
-        'pembelian_id',   
-        'kode_barang',   
+        'pembelian_id',
+        'kode_barang', 
         'qty',
         'harga',
         'created_by',
@@ -45,7 +42,7 @@ class PembelianDetail extends Model
 
     public function barang()
     {
-        return $this->belongsTo(Barang::class, 'kode_barang', 'kode_barang');
+        return $this->belongsTo(Barang::class, 'kode_barang', 'id')
+                    ->whereNull('deleted_at');
     }
-    
 }
