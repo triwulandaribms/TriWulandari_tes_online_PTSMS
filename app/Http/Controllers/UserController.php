@@ -14,52 +14,49 @@ class UserController extends Controller
 {
 
     public function registrasi(Request $request){
-
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255',
             'password' => 'required|string|min:6'
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json([
                 'status'=>'error',
                 'message'=>$validator->errors()->first()
             ],400);
         }
-
+    
         $user = User::create([
             'username' => $request->username,
             'password' => Hash::make($request->password)
         ]);
-
+    
+        $token = auth('api')->login($user); 
+    
         return response()->json([
             'status'=>'success',
             'message'=>'Registrasi berhasil',
-            'data'=>$user
+            'data'=>$user,
+            'token'=>$token
         ],201);
     }
-
+    
     public function login(Request $request){
-
         $validator = Validator::make($request->all(), [
-            'username'=>'required|username',
-            'password'=>'required|date'
+            'username' => 'required|string',
+            'password' => 'required|string'
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['status'=>'error','message'=>$validator->errors()->first()],400);
         }
-
-        $password = Carbon::parse($request->tanggal_lahir)->format('Ymd');
-        $credentials = [
-            'username' => $request->username,
-            'password' => $password
-        ];
-
+    
+        $credentials = $request->only('username', 'password');
+    
         if (!$token = auth('api')->attempt($credentials)) {
-            return response()->json(['status'=>'error','message'=>'username atau password'],401);
+            return response()->json(['status'=>'error','message'=>'Username atau password salah'],401);
         }
-
+    
         return response()->json([
             'status'=>'success',
             'message'=>'Login berhasil',
@@ -67,6 +64,7 @@ class UserController extends Controller
             'user'=>auth('api')->user()
         ]);
     }
+    
 
 
     public function update(Request $request, $id){

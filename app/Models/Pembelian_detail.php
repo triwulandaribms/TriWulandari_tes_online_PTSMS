@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes; 
+use App\Models\Barang;
+use App\Models\Pembelian;
+
 
 class PembelianDetail extends Model
 {
@@ -41,6 +45,7 @@ class PembelianDetail extends Model
 
     public function barang()
     {
-        return $this->belongsTo(Barang::class, 'kode_barang', 'id');
+        return $this->belongsTo(Barang::class, 'kode_barang', 'kode_barang');
     }
+    
 }

@@ -5,13 +5,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PembelianController;
 
-Route::prefix('api')->group(function () {
 
     // Auth
     Route::post('/register', [UserController::class, 'registrasi']); 
     Route::post('/login', [UserController::class, 'login']);       
 
-    Route::middleware('auth.jwt')->group(function () {
+    // Route::middleware('auth.jwt')->group(function () {
 
         // User
         Route::put('/users/{id}', [UserController::class, 'update']);
@@ -19,19 +18,18 @@ Route::prefix('api')->group(function () {
         Route::post('/logout', [UserController::class, 'logout']);       
 
         // Barang
-        Route::get('/barang', [BarangController::class, 'index']);
-        Route::post('/barang', [BarangController::class, 'store']);
-        Route::get('/barang/{id}', [BarangController::class, 'show']);
+        Route::get('/barang', [BarangController::class, 'tampilAll']);
+        Route::post('/barang', [BarangController::class, 'tambah']);
+        Route::get('/barang/{id}', [BarangController::class, 'tampil']);
         Route::put('/barang/{id}', [BarangController::class, 'update']);
         Route::delete('/barang/{id}', [BarangController::class, 'hapus']); 
 
         // Pembelian
-        Route::get('/pembelian', [PembelianController::class, 'index']);
-        Route::get('/pembelian/{id}', [PembelianController::class, 'show']);
-        Route::post('/pembelian', [PembelianController::class, 'store']); 
+        Route::get('/pembelian', [PembelianController::class, 'tampilAll']);
+        Route::get('/pembelian/{id}', [PembelianController::class, 'tampil']);
+        Route::post('/pembelian', [PembelianController::class, 'tambah']); 
         Route::put('/pembelian/{id}', [PembelianController::class, 'update']);
         Route::delete('/pembelian/{id}', [PembelianController::class, 'hapus']); 
 
         Route::get('/report/pembelian', [PembelianController::class, 'report']);
-    });
-});
+    // });
