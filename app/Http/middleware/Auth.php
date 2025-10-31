@@ -4,36 +4,38 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Exception;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class AuthJwtMiddleware
 {
-    public function handle(Request $request, Closure $next): Response
-    {
-        $authHeader = $request->header('Authorization');
-
-        if (!$authHeader) {
-            return response()->json(['status'=>'error','message' => 'Mohon masukkan token.'], 401);
-        }
-
-        $token = explode(' ', $authHeader)[1] ?? null;
-
-        if (!$token) {
-            return response()->json(['status'=>'error','message' => 'Token tidak valid.'], 401);
-        }
-
+    public function handle(Request $request, Closure $next){
+        
         try {
-            $decoded = JWT::decode($token, new Key(env('JWT_SECRET'), 'HS256'));
+            $user = JWTAuth::parseToken()->authenticate();
 
-            $request->attributes->set('user', $decoded);
-
+            if (!$user) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'User tidak ditemukan'
+                ], 404);
+            }
+        } catch (TokenExpiredException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Token sudah kadaluarsa'
+            ], 401);
+        } catch (TokenInvalidException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Token tidak valid'
+            ], 401);
         } catch (Exception $e) {
             return response()->json([
-                'status'=>'error',
-                'message' => 'Token tidak valid: ' . $e->getMessage()
+                'status' => 'error',
+                'message' => 'Token tidak ditemukan atau terjadi kesalahan'
             ], 401);
         }
 

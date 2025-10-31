@@ -7,16 +7,14 @@ use App\Http\Controllers\PembelianController;
 
 
     // Auth
+    Route::get('/list-user', [UserController::class, 'listUser']);       
     Route::post('/register', [UserController::class, 'registrasi']); 
     Route::post('/login', [UserController::class, 'login']);       
-
-    // Route::middleware('auth.jwt')->group(function () {
-
-        // User
-        Route::put('/users/{id}', [UserController::class, 'update']);
-        Route::delete('/users/{id}', [UserController::class, 'hapus']); 
-        Route::post('/logout', [UserController::class, 'logout']);       
-
+    Route::put('/update-user-by/{id}', [UserController::class, 'update']);
+    Route::delete('/delete-user-by/{id}', [UserController::class, 'hapus']); 
+    Route::post('/logout', [UserController::class, 'logout']);     
+    
+    Route::middleware('auth.jwt')->group(function () {
         // Barang
         Route::get('/barang', [BarangController::class, 'tampilAll']);
         Route::post('/barang', [BarangController::class, 'tambah']);
@@ -32,4 +30,4 @@ use App\Http\Controllers\PembelianController;
         Route::delete('/pembelian/{id}', [PembelianController::class, 'hapus']); 
 
         Route::get('/report/pembelian', [PembelianController::class, 'report']);
-    // });
+    });

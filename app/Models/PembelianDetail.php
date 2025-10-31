@@ -16,6 +16,10 @@ class PembelianDetail extends Model
     public $incrementing = true;
     public $timestamps = true;
 
+    protected $hidden = [
+        'created_at', 'updated_at', 'deleted_at'
+    ];
+    
     protected $fillable = [
         'pembelian_id',
         'kode_barang', 
@@ -29,7 +33,7 @@ class PembelianDetail extends Model
 
     protected $casts = [
         'qty' => 'integer',
-        'harga' => 'decimal:2',
+        'harga' => 'float',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',

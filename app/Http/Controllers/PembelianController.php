@@ -20,6 +20,7 @@ class PembelianController extends Controller
             : response()->json(['status' => 'success', 'data' => $data]);
     }
 
+    
     public function tampil($id){
 
         $pembelian = Pembelian::with('details.barang')
@@ -31,6 +32,7 @@ class PembelianController extends Controller
             ? response()->json([ 'message' => 'Data pembelian tidak ditemukan'], 404)
             : response()->json(['status' => 'success', 'data' => $pembelian]);
     }
+
 
     public function tambah(Request $request){
 
@@ -108,6 +110,7 @@ class PembelianController extends Controller
             ], 500);
         }
     }
+
 
     public function update(Request $request, $id){
         
@@ -194,6 +197,7 @@ class PembelianController extends Controller
         }
     }
 
+    
     public function hapus($id){
 
         $pembelian = Pembelian::where('id', $id)->whereNull('deleted_at')->first();
@@ -208,6 +212,7 @@ class PembelianController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Pembelian berhasil dihapus']);
     }
    
+
     public function report(Request $request){
 
         $tanggal = $request->query('tanggal');
@@ -215,7 +220,7 @@ class PembelianController extends Controller
     
         $query = DB::table('tbl_pembelian_detail as d')
             ->join('tbl_pembelian as p', 'd.pembelian_id', '=', 'p.id')
-            ->join('tbl_barang as b', 'd.kode_barang', '=', 'b.id')
+            ->join('tbl_barang as b', 'd.kode_barang', '=', 'b.id') 
             ->select(
                 'p.tanggal',
                 'b.kode_barang',
@@ -236,7 +241,16 @@ class PembelianController extends Controller
             $query->where('b.kode_barang', $kode_barang);
         }
     
-        $data = $query->get();
+        $data = $query->get()->map(function ($item) {
+            return [
+                'tanggal' => $item->tanggal,
+                'kode_barang' => $item->kode_barang,
+                'nama_barang' => $item->nama_barang,
+                'harga_satuan' => (float) $item->harga_satuan,
+                'total_qty' => (int) $item->total_qty,
+                'total_harga' => (float) $item->total_harga,
+            ];
+        });
     
         if ($data->isEmpty()) {
             return response()->json([
@@ -248,8 +262,6 @@ class PembelianController extends Controller
             'status' => 'success',
             'data' => $data
         ]);
-    
     }
-
 
 }

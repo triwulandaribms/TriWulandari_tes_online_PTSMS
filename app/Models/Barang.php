@@ -15,6 +15,7 @@ class Barang extends Model
     public $incrementing = true;
     public $timestamps = true;
 
+    
     protected $fillable = [
         'kode_barang',
         'nama_barang',
@@ -28,7 +29,7 @@ class Barang extends Model
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
     protected $casts = [
-        'harga' => 'decimal:2',
+        'harga' => 'float',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',

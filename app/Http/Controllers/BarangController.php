@@ -14,36 +14,6 @@ class BarangController extends Controller
         return response()->json($barang);
     }
 
-    public function tambah(Request $request){
-        $validator = Validator::make($request->all(), [
-            'kode_barang' => 'required|string',
-            'nama_barang' => 'required|string',
-            'harga'       => 'required|numeric'
-        ]);
-    
-        if ($validator->fails()) {
-            return response()->json(['status'=>'error','message'=>$validator->errors()->first()], 400);
-        }
-    
-        $existing = Barang::where('kode_barang', $request->kode_barang)
-            ->whereNull('deleted_at') 
-            ->first();
-    
-        if ($existing) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Kode barang tidak boleh sama'
-            ], 400);
-        }
-    
-        $barang = Barang::create($request->all());
-    
-        return response()->json([
-            'status'=>'success',
-            'data'=>$barang
-        ]);
-    }
-    
     public function tampil($id){
         $barang = Barang::where('id', $id)
             ->whereNull('deleted_at')
@@ -61,6 +31,35 @@ class BarangController extends Controller
         ]);
     }
     
+    public function tambah(Request $request){
+        $validator = Validator::make($request->all(), [
+            'kode_barang' => 'required|string',
+            'nama_barang' => 'required|string',
+            'harga'       => 'required|numeric'
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['status'=>'error','message'=>$validator->errors()->first()], 400);
+        }
+    
+        $existing = Barang::where('kode_barang', $request->kode_barang)
+            ->whereNull('deleted_at') 
+            ->first();
+    
+        if ($existing) {
+            return response()->json([
+                'message' => 'Kode barang tidak boleh sama'
+            ], 400);
+        }
+    
+        $barang = Barang::create($request->all());
+    
+        return response()->json([
+            'status'=>'success',
+            'data'=>$barang
+        ]);
+    }
+    
     public function update(Request $request, $id){
         $barang = Barang::where('id', $id)
             ->whereNull('deleted_at')
@@ -68,7 +67,6 @@ class BarangController extends Controller
     
         if (!$barang) {
             return response()->json([
-                'status' => 'error',
                 'message' => 'Barang tidak ditemukan'
             ], 404);
         }
@@ -99,8 +97,7 @@ class BarangController extends Controller
         $barang->update($request->all());
     
         return response()->json([
-            'status' => 'success',
-            'data' => $barang
+            'message' => 'Berhasil update'
         ]);
     }
     
@@ -119,7 +116,6 @@ class BarangController extends Controller
         $barang->save();
     
         return response()->json([
-            'status' => 'success',
             'message' => 'Barang berhasil dihapus'
         ]);
     }

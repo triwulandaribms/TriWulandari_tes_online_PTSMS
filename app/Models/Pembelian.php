@@ -14,6 +14,10 @@ class Pembelian extends Model
     protected $primaryKey = 'id';
     public $incrementing = true;
     public $timestamps = true;
+    
+    protected $hidden = [
+        'created_at', 'updated_at', 'deleted_at'
+    ];
 
     protected $fillable = [
         'tanggal',
@@ -27,7 +31,7 @@ class Pembelian extends Model
 
     protected $casts = [
         'tanggal' => 'datetime',
-        'total_harga' => 'decimal:2',
+        'total_harga' => 'float',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',

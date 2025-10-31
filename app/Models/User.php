@@ -3,38 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes; 
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Tymon\JWTAuth\Contracts\JWTSubject; 
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject 
 {
-    use HasApiTokens, Notifiable;
     use Notifiable, SoftDeletes;
 
     protected $table = 'tbl_user';
-
     protected $primaryKey = 'id';
-
+    public $incrementing = true;
+    public $timestamps = true;
 
     protected $hidden = ['password'];
-
-    public $incrementing = true;
-
-    public $timestamps = true;
 
     protected $fillable = [
         'username',
         'password',
-        'role',
         'created_by',
         'updated_by',
         'deleted_by',
         'deleted_at',
-    ];
-
-    protected $attributes = [
-        'role' => 'user',
     ];
 
     protected $casts = [
@@ -42,4 +32,20 @@ class User extends Authenticatable
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
+
+    // 🔹 Override login field menjadi username
+    public function getAuthIdentifierName()
+    {
+        return 'username';
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey(); 
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return []; 
+    }
 }
