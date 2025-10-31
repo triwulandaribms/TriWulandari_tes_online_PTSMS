@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('tbl_pembelian', function (Blueprint $table) {
             $table->id();
+            $table->date('tanggal');
+            $table->string('keterangan')->nullable();
+            $table->decimal('total_harga', 15, 2)->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

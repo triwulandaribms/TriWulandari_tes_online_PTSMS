@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class PembelianDetail extends Model
 {
+
+    use SoftDeletes;
+    
     protected $table = 'tbl_pembelian_detail';
 
     protected $primaryKey = 'id';

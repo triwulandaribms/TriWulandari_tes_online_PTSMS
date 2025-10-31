@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Barang extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'tbl_barang';
 
     protected $primaryKey = 'id';

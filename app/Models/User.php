@@ -9,17 +9,21 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
+    use Notifiable, SoftDeletes;
 
-    protected $table = 'users'; 
+    protected $table = 'tbl_user';
 
     protected $primaryKey = 'id';
 
+
+    protected $hidden = ['password'];
+
     public $incrementing = true;
+
     public $timestamps = true;
 
     protected $fillable = [
-        'name',
-        'email',
+        'username',
         'password',
         'role',
         'created_by',
@@ -27,8 +31,6 @@ class User extends Authenticatable
         'deleted_by',
         'deleted_at',
     ];
-
-    protected $hidden = ['password'];
 
     protected $attributes = [
         'role' => 'user',

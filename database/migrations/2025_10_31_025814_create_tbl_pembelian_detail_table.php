@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('tbl_pembelian_detail', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('pembelian_id')->constrained('tbl_pembelian')->onDelete('cascade');
+            $table->foreignId('kode_barang')->constrained('tbl_barang')->onDelete('cascade');
+            $table->integer('qty');
+            $table->decimal('harga', 15, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
