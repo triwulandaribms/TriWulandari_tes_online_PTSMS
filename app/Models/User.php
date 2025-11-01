@@ -33,7 +33,6 @@ class User extends Authenticatable implements JWTSubject
         'deleted_at' => 'datetime',
     ];
 
-    // 🔹 Override login field menjadi username
     public function getAuthIdentifierName()
     {
         return 'username';

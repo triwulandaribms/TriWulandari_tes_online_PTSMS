@@ -11,17 +11,21 @@ use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class AuthJwtMiddleware
 {
-    public function handle(Request $request, Closure $next){
-        
+    public function handle(Request $request, Closure $next)
+    {
         try {
             $user = JWTAuth::parseToken()->authenticate();
-
+    
             if (!$user) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'User tidak ditemukan'
                 ], 404);
             }
+    
+            // pastikan user ditambahkan ke attributes
+            $request->attributes->set('user', $user);
+    
         } catch (TokenExpiredException $e) {
             return response()->json([
                 'status' => 'error',
@@ -35,10 +39,11 @@ class AuthJwtMiddleware
         } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Token tidak ditemukan atau terjadi kesalahan'
+                'message' => 'Token tidak ditemukan atau terjadi kesalahan',
+                'error' => $e->getMessage() // opsional, untuk debugging
             ], 401);
         }
-
+    
         return $next($request);
     }
 }
