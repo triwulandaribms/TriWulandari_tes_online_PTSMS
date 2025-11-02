@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"wahyusaja@gmail.com\",\r\n    \"password\":\"19990812\"\r\n}",
+							"raw": "{\r\n    \"username\":\"Meliana\",\r\n    \"email\":\"meliana1020@gmail.com\",\r\n    \"tanggal_lahir\":\"199-12-12\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -38,76 +38,13 @@
 					},
 					"response": [
 						{
-							"name": "error username",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"username\":\"triwulandari3456gmail.com\",\r\n    \"password\":\"19991208\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8000/api/register",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"register"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": null,
-							"header": [
-								{
-									"key": "Host",
-									"value": "localhost:8000"
-								},
-								{
-									"key": "Connection",
-									"value": "close"
-								},
-								{
-									"key": "X-Powered-By",
-									"value": "PHP/8.2.12"
-								},
-								{
-									"key": "Cache-Control",
-									"value": "no-cache, private"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 31 Oct 2025 15:41:22 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Username harus berupa email yang valid.\"\n}"
-						},
-						{
 							"name": "success",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\":\"triwulandari3456@gmail.com\",\r\n    \"password\":\"19991208\"\r\n}",
+									"raw": "{\r\n    \"username\":\"Tri Wulandari\",\r\n    \"email\":\"wulan@gmail.com\",\r\n    \"tanggal_lahir\":\"1999-12-08\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -149,7 +86,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 31 Oct 2025 15:42:56 GMT"
+									"value": "Sun, 02 Nov 2025 03:39:43 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -161,16 +98,16 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Registrasi berhasil\"\n}"
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Registrasi berhasil\",\n    \"data\": {\n        \"id\": 1,\n        \"username\": \"Tri Wulandari\",\n        \"email\": \"wulan@gmail.com\",\n        \"tanggal_lahir\": \"1999-12-08\"\n    }\n}"
 						},
 						{
-							"name": "error password",
+							"name": "error duplicate email",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\":\"meliana1020@gmail.com\",\r\n    \"password\":\"200010\"\r\n}",
+									"raw": "{\r\n    \"username\":\"Tri Wulandari\",\r\n    \"email\":\"wulan@gmail.com\",\r\n    \"tanggal_lahir\":\"1999-12-08\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -212,7 +149,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 31 Oct 2025 15:43:39 GMT"
+									"value": "Sun, 02 Nov 2025 03:40:16 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -224,16 +161,16 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Password minimal 8 karakter (YYYYMMDD).\"\n}"
+							"body": "{\n    \"message\": \"Email sudah digunakan.\"\n}"
 						},
 						{
-							"name": "error password sama dengan username",
+							"name": "error format email",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\":\"meliana102@gmail.com\",\r\n    \"password\":\"meliana102@gmail.com\"\r\n}",
+									"raw": "{\r\n    \"username\":\"Meliana\",\r\n    \"email\":\"melianagmail.com\",\r\n    \"tanggal_lahir\":\"1999-12-12\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -275,7 +212,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 31 Oct 2025 15:44:53 GMT"
+									"value": "Sun, 02 Nov 2025 03:41:29 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -287,7 +224,70 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Password tidak boleh sama dengan username.\"\n}"
+							"body": "{\n    \"message\": \"Format email tidak valid.\"\n}"
+						},
+						{
+							"name": "error format tanggal lahir",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"Meliana\",\r\n    \"email\":\"meliana1020@gmail.com\",\r\n    \"tanggal_lahir\":\"199-12-12\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 02 Nov 2025 03:42:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Format tanggal lahir harus YYYY-MM-DD.\"\n}"
 						}
 					]
 				},
@@ -298,7 +298,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"triwulandari3456@gmail.com\",\r\n    \"password\":\"19991212\"\r\n}",
+							"raw": "{\r\n    \"username\":\"wulan@gmail.com\",\r\n    \"password\":\"19991208\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -320,139 +320,13 @@
 					},
 					"response": [
 						{
-							"name": "success",
+							"name": "error not found username",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\":\"triwulandari3456@gmail.com\",\r\n    \"password\":\"19991208\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8000/api/login",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"login"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": null,
-							"header": [
-								{
-									"key": "Host",
-									"value": "localhost:8000"
-								},
-								{
-									"key": "Connection",
-									"value": "close"
-								},
-								{
-									"key": "X-Powered-By",
-									"value": "PHP/8.2.12"
-								},
-								{
-									"key": "Cache-Control",
-									"value": "no-cache, private"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 31 Oct 2025 16:40:22 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Login berhasil\",\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzYxOTI4ODIyLCJleHAiOjE3NjE5MzI0MjIsIm5iZiI6MTc2MTkyODgyMiwianRpIjoiUlFHTjhHdDRqSmpJYkM5RCIsInN1YiI6IjUiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7zTQ0DkRLES7Pks0kX07yvgfG0NPbGtWn49IYbETFRE\"\n}"
-						},
-						{
-							"name": "error password",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"username\":\"triwulandari3456@gmail.com\",\r\n    \"password\":\"19991209\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8000/api/login",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8000",
-									"path": [
-										"api",
-										"login"
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": null,
-							"header": [
-								{
-									"key": "Host",
-									"value": "localhost:8000"
-								},
-								{
-									"key": "Connection",
-									"value": "close"
-								},
-								{
-									"key": "X-Powered-By",
-									"value": "PHP/8.2.12"
-								},
-								{
-									"key": "Cache-Control",
-									"value": "no-cache, private"
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 31 Oct 2025 16:54:16 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Password salah\"\n}"
-						},
-						{
-							"name": "error username",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"username\":\"triwulandari345@gmail.com\",\r\n    \"password\":\"19991208\"\r\n}",
+									"raw": "{\r\n    \"username\":\"wulansaja@gmail.com\",\r\n    \"password\":\"19990812\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -494,7 +368,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 31 Oct 2025 16:54:51 GMT"
+									"value": "Sun, 02 Nov 2025 03:46:59 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -506,7 +380,196 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Username tidak ditemukan\"\n}"
+							"body": "{\n    \"message\": \"Username tidak ditemukan\"\n}"
+						},
+						{
+							"name": "error username format email",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"triwulandari3456gmail.com\",\r\n    \"password\":\"19990812\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 02 Nov 2025 03:51:35 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Username harus berupa format email.\"\n}"
+						},
+						{
+							"name": "error password format tanggal lahir",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"triwulandari3456@gmail.com\",\r\n    \"password\":\"199908\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 02 Nov 2025 03:52:07 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Password harus berupa tanggal lahir dengan format YYYYMMDD.\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"wulan@gmail.com\",\r\n    \"password\":\"19991208\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 02 Nov 2025 04:18:18 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Login berhasil\",\n    \"token\": \"2|6S9biLmiHGt6m8FT7glm9CzxjwafO3WI0vVWdZaE7aa73147\"\n}"
 						}
 					]
 				},
@@ -516,6 +579,16 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|6S9biLmiHGt6m8FT7glm9CzxjwafO3WI0vVWdZaE7aa73147",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -580,7 +653,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 31 Oct 2025 17:06:41 GMT"
+									"value": "Sun, 02 Nov 2025 04:20:29 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -592,18 +665,28 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": \"success\",\n    \"data\": [\n        {\n            \"id\": 5,\n            \"username\": \"triwulandari3456@gmail.com\"\n        },\n        {\n            \"id\": 6,\n            \"username\": \"meliana1020@gmail.com\"\n        }\n    ]\n}"
+							"body": "{\n    \"status\": \"success\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"username\": \"Tri Wulandari\",\n            \"email\": \"wulan@gmail.com\"\n        },\n        {\n            \"id\": 2,\n            \"username\": \"Meliana\",\n            \"email\": \"meliana@gmail.com\"\n        }\n    ]\n}"
 						}
 					]
 				},
 				{
 					"name": "update user",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|6S9biLmiHGt6m8FT7glm9CzxjwafO3WI0vVWdZaE7aa73147",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"triwulandari3456@gmail.com\",\r\n    \"password\":\"19991212\"\r\n}",
+							"raw": "{\r\n    \"username\":\"Meliana\",\r\n    \"email\":\"meliana1020@gmail.com\",\r\n    \"tanggal_lahir\":\"1999-12-12\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -611,7 +694,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/update-user-by/5",
+							"raw": "http://localhost:8000/api/update-user-by/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -620,19 +703,19 @@
 							"path": [
 								"api",
 								"update-user-by",
-								"5"
+								"2"
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "error not found",
+							"name": "error not found user",
 							"originalRequest": {
 								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\":\"meliana102@gmail.com\",\r\n    \"password\":\"20001111\"\r\n}",
+									"raw": "{\r\n    \"username\":\"Meliana\",\r\n    \"email\":\"meliana1020@gmail.com\",\r\n    \"tanggal_lahir\":\"199-12-12\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -640,7 +723,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8000/api/update-user-by/2",
+									"raw": "http://localhost:8000/api/update-user-by/5",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -649,7 +732,7 @@
 									"path": [
 										"api",
 										"update-user-by",
-										"2"
+										"5"
 									]
 								}
 							},
@@ -675,7 +758,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 31 Oct 2025 17:10:08 GMT"
+									"value": "Sun, 02 Nov 2025 04:29:14 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -687,16 +770,16 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": \"error\",\n    \"message\": \"User tidak ditemukan atau sudah dihapus\"\n}"
+							"body": "{\n    \"message\": \"User tidak ditemukan atau sudah dihapus\"\n}"
 						},
 						{
-							"name": "success",
+							"name": "error format tanggal lahir",
 							"originalRequest": {
 								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\":\"triwulandari3456@gmail.com\",\r\n    \"password\":\"19991212\"\r\n}",
+									"raw": "{\r\n    \"username\":\"Meliana\",\r\n    \"email\":\"meliana1020@gmail.com\",\r\n    \"tanggal_lahir\":\"199-12-12\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -704,7 +787,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8000/api/update-user-by/5",
+									"raw": "http://localhost:8000/api/update-user-by/2",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -713,7 +796,71 @@
 									"path": [
 										"api",
 										"update-user-by",
-										"5"
+										"2"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 02 Nov 2025 04:30:40 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Format tanggal lahir harus YYYY-MM-DD.\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"Meliana\",\r\n    \"email\":\"meliana1020@gmail.com\",\r\n    \"tanggal_lahir\":\"1999-12-12\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/update-user-by/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"update-user-by",
+										"2"
 									]
 								}
 							},
@@ -739,7 +886,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 31 Oct 2025 17:15:07 GMT"
+									"value": "Sun, 02 Nov 2025 04:31:17 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -751,7 +898,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": \"success\",\n    \"message\": \"User berhasil diupdate\"\n}"
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Data user berhasil diupdate\",\n    \"data\": {\n        \"id\": 2,\n        \"username\": \"Meliana\",\n        \"email\": \"meliana1020@gmail.com\",\n        \"tanggal_lahir\": \"1999-12-12\"\n    }\n}"
 						}
 					]
 				},
@@ -1071,7 +1218,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzYxOTc5NzY0LCJleHAiOjE3NjE5ODMzNjQsIm5iZiI6MTc2MTk3OTc2NCwianRpIjoiWjZQTkVpa1dGckhwd0V1RSIsInN1YiI6IjEwIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.cnwSlNFd6z6FHOKQ-ojmc8JR9NFlfJ5YT0Uq3JYWFpw",
 									"type": "string"
 								}
 							]
@@ -1959,7 +2106,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 31 Oct 2025 14:47:47 GMT"
+									"value": "Sun, 02 Nov 2025 01:05:51 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -1971,7 +2118,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": \"success\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"tanggal\": \"2025-10-31T00:00:00.000000Z\",\n            \"keterangan\": \"Pembelian ATK\",\n            \"total_harga\": 15000,\n            \"details\": [\n                {\n                    \"id\": 1,\n                    \"pembelian_id\": 1,\n                    \"kode_barang\": 2,\n                    \"qty\": 2,\n                    \"harga\": 2500,\n                    \"barang\": {\n                        \"id\": 2,\n                        \"kode_barang\": \"A002\",\n                        \"nama_barang\": \"Pensil 2B\",\n                        \"harga\": 2500\n                    }\n                },\n                {\n                    \"id\": 2,\n                    \"pembelian_id\": 1,\n                    \"kode_barang\": 3,\n                    \"qty\": 2,\n                    \"harga\": 5000,\n                    \"barang\": {\n                        \"id\": 3,\n                        \"kode_barang\": \"A003\",\n                        \"nama_barang\": \"Kertas sterofom\",\n                        \"harga\": 5000\n                    }\n                }\n            ]\n        },\n        {\n            \"id\": 2,\n            \"tanggal\": \"2025-10-31T00:00:00.000000Z\",\n            \"keterangan\": \"Pembelian ATK\",\n            \"total_harga\": 20000,\n            \"details\": [\n                {\n                    \"id\": 3,\n                    \"pembelian_id\": 2,\n                    \"kode_barang\": 4,\n                    \"qty\": 2,\n                    \"harga\": 6000,\n                    \"barang\": {\n                        \"id\": 4,\n                        \"kode_barang\": \"A004\",\n                        \"nama_barang\": \"Binder clips\",\n                        \"harga\": 4000\n                    }\n                },\n                {\n                    \"id\": 4,\n                    \"pembelian_id\": 2,\n                    \"kode_barang\": 5,\n                    \"qty\": 2,\n                    \"harga\": 4000,\n                    \"barang\": {\n                        \"id\": 5,\n                        \"kode_barang\": \"A005\",\n                        \"nama_barang\": \"Map plastik\",\n                        \"harga\": 6000\n                    }\n                }\n            ]\n        }\n    ]\n}"
+							"body": "{\n    \"status\": \"success\",\n    \"data\": [\n        {\n            \"id\": 2,\n            \"tanggal\": \"2025-10-31T00:00:00.000000Z\",\n            \"keterangan\": \"Pembelian ATK\",\n            \"total_harga\": 20000,\n            \"details\": [\n                {\n                    \"id\": 3,\n                    \"pembelian_id\": 2,\n                    \"qty\": 2,\n                    \"barang\": {\n                        \"id\": 4,\n                        \"kode_barang\": \"A004\",\n                        \"nama_barang\": \"Binder clips\",\n                        \"harga\": 4000\n                    }\n                },\n                {\n                    \"id\": 4,\n                    \"pembelian_id\": 2,\n                    \"qty\": 2,\n                    \"barang\": {\n                        \"id\": 5,\n                        \"kode_barang\": \"A005\",\n                        \"nama_barang\": \"Map plastik\",\n                        \"harga\": 6000\n                    }\n                }\n            ]\n        }\n    ]\n}"
 						}
 					]
 				},
@@ -1988,7 +2135,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/pembelian/1",
+							"raw": "http://localhost:8000/api/pembelian/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1997,7 +2144,7 @@
 							"path": [
 								"api",
 								"pembelian",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -2071,7 +2218,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "http://localhost:8000/api/pembelian/1",
+									"raw": "http://localhost:8000/api/pembelian/2",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -2080,7 +2227,7 @@
 									"path": [
 										"api",
 										"pembelian",
-										"1"
+										"2"
 									]
 								}
 							},
@@ -2106,7 +2253,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Fri, 31 Oct 2025 14:49:45 GMT"
+									"value": "Sun, 02 Nov 2025 01:25:47 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -2118,7 +2265,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"id\": 1,\n        \"tanggal\": \"2025-10-31T00:00:00.000000Z\",\n        \"keterangan\": \"Pembelian ATK\",\n        \"total_harga\": 15000,\n        \"details\": [\n            {\n                \"id\": 1,\n                \"pembelian_id\": 1,\n                \"kode_barang\": 2,\n                \"qty\": 2,\n                \"harga\": 2500,\n                \"barang\": {\n                    \"id\": 2,\n                    \"kode_barang\": \"A002\",\n                    \"nama_barang\": \"Pensil 2B\",\n                    \"harga\": 2500\n                }\n            },\n            {\n                \"id\": 2,\n                \"pembelian_id\": 1,\n                \"kode_barang\": 3,\n                \"qty\": 2,\n                \"harga\": 5000,\n                \"barang\": {\n                    \"id\": 3,\n                    \"kode_barang\": \"A003\",\n                    \"nama_barang\": \"Kertas sterofom\",\n                    \"harga\": 5000\n                }\n            }\n        ]\n    }\n}"
+							"body": "{\n    \"status\": \"success\",\n    \"data\": [\n        {\n            \"id\": 2,\n            \"tanggal\": \"2025-10-31T00:00:00.000000Z\",\n            \"keterangan\": \"Pembelian ATK\",\n            \"total_harga\": 20000,\n            \"details\": [\n                {\n                    \"id\": 3,\n                    \"pembelian_id\": 2,\n                    \"qty\": 2,\n                    \"barang\": {\n                        \"id\": 4,\n                        \"kode_barang\": \"A004\",\n                        \"nama_barang\": \"Binder clips\",\n                        \"harga\": 4000\n                    }\n                },\n                {\n                    \"id\": 4,\n                    \"pembelian_id\": 2,\n                    \"qty\": 2,\n                    \"barang\": {\n                        \"id\": 5,\n                        \"kode_barang\": \"A005\",\n                        \"nama_barang\": \"Map plastik\",\n                        \"harga\": 6000\n                    }\n                }\n            ]\n        }\n    ]\n}"
 						}
 					]
 				},
@@ -2438,7 +2585,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/report/pembelian?tanggal=2025-10-31&kode_barang=A003",
+							"raw": "http://localhost:8000/api/report/pembelian?tanggal=2025-10-31&kode_barang=A004",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2456,7 +2603,7 @@
 								},
 								{
 									"key": "kode_barang",
-									"value": "A003"
+									"value": "A004"
 								}
 							]
 						}
