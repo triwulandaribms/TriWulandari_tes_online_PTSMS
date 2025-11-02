@@ -5,209 +5,169 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon; 
 
 class UserController extends Controller
 {
-
+    
     public function listUser(){
         try {
             $users = User::whereNull('deleted_at')->get();
 
             return response()->json([
                 'status' => 'success',
-                'data' => $users->map(function ($user) {
-                    return [
-                        'id' => $user->id,
-                        'username' => $user->username
-                    ];
-                })
+                'data' => $users->map(fn($user) => [
+                    'id' => $user->id,
+                    'username' => $user->username,
+                    'email' =>$user->email
+                ]),
             ]);
-            
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
             ], 500);
         }
     }
 
     public function registrasi(Request $request){
 
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'username' => 'required|string|email|unique:tbl_user,username', 
-                'password' => 'required|string|min:8', 
-            ],
-            [
-                'username.required' => 'Username wajib diisi.',
-                'username.email' => 'Username harus berupa email yang valid.',
-                'username.unique' => 'Username tidak boleh sama.',
-                'password.required' => 'Password wajib diisi.',
-                'password.min' => 'Password minimal 8 karakter (YYYYMMDD).',
-            ]
-        );
+        $validasi = Validator::make($request->all(), [
+            'username' => 'required|string',
+            'email' => 'required|email|unique:tbl_user,email',
+            'tanggal_lahir' => 'required|date_format:Y-m-d',
+        ], [
+            'username.required' => 'Username wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan.',
+            'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
+            'tanggal_lahir.date_format' => 'Format tanggal lahir harus YYYY-MM-DD.',
+        ]);
     
-        $validator->after(function ($validator) use ($request) {
-
-            if ($request->password === $request->username) {
-                $validator->errors()->add('password', 'Password tidak boleh sama dengan username.');
-            }
-    
-            if (!preg_match('/^\d{8}$/', $request->password)) {
-                $validator->errors()->add('password', 'Password harus berupa tanggal lahir dengan format YYYYMMDD.');
-            }
-    
-            if (!str_ends_with($request->username, '@gmail.com')) {
-                $validator->errors()->add('username', 'Username harus berakhiran @gmail.com.');
-            }
-        });
-    
-        if ($validator->fails()) {
+        if ($validasi->fails()) {
             return response()->json([
-                'status' => 'error',
-                'message' => $validator->errors()->first()
+                'message' => $validasi->errors()->first()
             ], 400);
         }
     
+        $passwordDummy = Hash::make($request->tanggal_lahir);
+    
         $user = User::create([
             'username' => $request->username,
-            'password' => Hash::make($request->password)
+            'email' => $request->email,
+            'password' => $passwordDummy,
+            'tanggal_lahir' => $request->tanggal_lahir
         ]);
     
         return response()->json([
             'status' => 'success',
             'message' => 'Registrasi berhasil',
+            'data' => [
+                'id' => $user->id,
+                'username' => $user->username,
+                'email' => $user->email,
+                'tanggal_lahir' => $user->tanggal_lahir->format('Y-m-d'),
+            ]
         ], 201);
     }
     
     public function login(Request $request){
-        try {
-
-            $validator = Validator::make($request->all(), [
-                'username' => 'required|string|email',
-                'password' => 'required|string|size:8',
-            ], [
-                'username.required' => 'Username wajib diisi.',
-                'username.email' => 'Username harus berupa email yang valid.',
-                'password.required' => 'Password wajib diisi.',
-                'password.size' => 'Password harus 8 karakter (YYYYMMDD).',
-            ]);
+        $validasi = Validator::make($request->all(), [
+            'username' => 'required|email',
+            'password' => 'required|string|regex:/^\d{8}$/',
+        ], [
+            'username.required' => 'Username wajib diisi.',
+            'username.email' => 'Username harus berupa email yang valid.',
+            'password.required' => 'Password wajib diisi.',
+            'password.regex' => 'Password harus berupa tanggal lahir dengan format YYYYMMDD.',
+        ]);
     
-            $validator->after(function ($validator) use ($request) {
-                if (!str_ends_with($request->username, '@gmail.com')) {
-                    $validator->errors()->add('username', 'Username harus berakhiran @gmail.com.');
-                }
-    
-                if (!preg_match('/^\d{8}$/', $request->password)) {
-                    $validator->errors()->add('password', 'Password harus berupa tanggal lahir dengan format YYYYMMDD.');
-                }
-            });
-    
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => $validator->errors()->first()
-                ], 400);
-            }
-    
-            $user = User::where('username', $request->username)->first();
-    
-            if (!$user) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Username tidak ditemukan'
-                ], 404);
-            }
-    
-            if (!Hash::check($request->password, $user->password)) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Password salah'
-                ], 401);
-            }
-    
-            $token = auth('api')->login($user);
-    
+        if ($validasi->fails()) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Login berhasil',
-                'token' => $token
-            ], 200);
-    
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Terjadi kesalahan server: '.$e->getMessage()
-            ], 500);
+                'message' => $validasi->errors()->first(),
+            ], 400);
         }
+    
+        $user = User::where('email', $request->username)->first();
+    
+        if (!$user) {
+            return response()->json([
+                'message' => 'Username tidak ditemukan',
+            ], 404);
+        }
+    
+        $tanggalLahirFormatted = Carbon::parse($user->tanggal_lahir)->format('Ymd');
+    
+        if ($request->password !== $tanggalLahirFormatted) {
+            return response()->json([
+                'message' => 'Password salah.',
+            ], 401);
+        }
+    
+        $token = $user->createToken('auth_token')->plainTextToken;
+    
+        return response()->json([
+            'message' => 'Login berhasil',
+            'token' => $token,
+        ], 200);
     
     }
 
     public function update(Request $request, $id){
         try {
             $user = User::where('id', $id)->whereNull('deleted_at')->first();
+    
             if (!$user) {
                 return response()->json([
-                    'status' => 'error',
-                    'message' => 'User tidak ditemukan atau sudah dihapus'
+                    'message' => 'User tidak ditemukan atau sudah dihapus',
                 ], 404);
             }
     
-            $validator = Validator::make($request->all(), [
-                'username' => 'sometimes|required|string|email|unique:tbl_user,username,' . $id,
-                'password' => 'sometimes|required|string|size:8',
+           $validasi = Validator::make($request->all(), [
+                'username' => 'sometimes|required|string|unique:tbl_user,username,' . $id,
+                'email' => 'sometimes|required|email|unique:tbl_user,email,' . $id,
+                'tanggal_lahir' => 'sometimes|required|date_format:Y-m-d',
             ], [
                 'username.required' => 'Username wajib diisi.',
-                'username.email' => 'Username harus berupa email yang valid.',
-                'username.unique' => 'Username tidak boleh sama.',
-                'password.required' => 'Password wajib diisi.',
-                'password.size' => 'Password harus 8 karakter (YYYYMMDD).',
+                'username.unique' => 'Username sudah digunakan.',
+                'email.required' => 'Email wajib diisi.',
+                'email.email' => 'Format email tidak valid.',
+                'email.unique' => 'Email sudah digunakan.',
+                'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
+                'tanggal_lahir.date_format' => 'Format tanggal lahir harus YYYY-MM-DD.',
             ]);
     
-            $validator->after(function ($validator) use ($request) {
-                if (isset($request->username) && !str_ends_with($request->username, '@gmail.com')) {
-                    $validator->errors()->add('username', 'Username harus berakhiran @gmail.com.');
-                }
-    
-                if (isset($request->password)) {
-                    if (!preg_match('/^\d{8}$/', $request->password)) {
-                        $validator->errors()->add('password', 'Password harus berupa tanggal lahir dengan format YYYYMMDD.');
-                    }
-    
-                    if (isset($request->username) && $request->password === $request->username) {
-                        $validator->errors()->add('password', 'Password tidak boleh sama dengan username.');
-                    }
-                }
-            });
-    
-            if ($validator->fails()) {
+            if ($validasi->fails()) {
                 return response()->json([
-                    'status' => 'error',
-                    'message' => $validator->errors()->first()
+                    'message' =>$validasi->errors()->first(),
                 ], 400);
             }
     
-            $data = $request->only(['username', 'password']);
-            if (isset($data['password'])) {
-                $data['password'] = Hash::make($data['password']);
+            $data = $request->only(['username', 'email', 'tanggal_lahir']);
+    
+            if (isset($data['tanggal_lahir'])) {
+                $data['password'] = Hash::make($data['tanggal_lahir']);
             }
     
             $user->update($data);
     
             return response()->json([
                 'status' => 'success',
-                'message' => 'User berhasil diupdate',
-            ]);
+                'message' => 'Data user berhasil diupdate',
+                'data' => [
+                    'id' => $user->id,
+                    'username' => $user->username,
+                    'email' => $user->email,
+                    'tanggal_lahir' => $user->tanggal_lahir->format('Y-m-d'),
+                ]
+            ], 200);
+    
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -218,7 +178,7 @@ class UserController extends Controller
             if (!$user) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'User tidak ditemukan atau sudah dihapus'
+                    'message' => 'User tidak ditemukan atau sudah dihapus',
                 ], 404);
             }
 
@@ -227,30 +187,25 @@ class UserController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'User berhasil dihapus'
+                'message' => 'User berhasil dihapus',
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
             ], 500);
         }
     }
 
-    public function logout(){
-        try {
-            auth('api')->logout();
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Logout berhasil'
-            ]);
-        } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
-            ], 500);
-        }
+    public function logout(Request $request){
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logout berhasil',
+        ]);
     }
+  
+
+   
 }
-
-

@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Tymon\JWTAuth\Contracts\JWTSubject; 
+use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements JWTSubject 
+class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use HasApiTokens, Notifiable, SoftDeletes;
 
     protected $table = 'tbl_user';
     protected $primaryKey = 'id';
@@ -20,6 +21,8 @@ class User extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'username',
+        'email',
+        'tanggal_lahir',
         'password',
         'created_by',
         'updated_by',
@@ -28,6 +31,7 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     protected $casts = [
+        'tanggal_lahir' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -35,16 +39,11 @@ class User extends Authenticatable implements JWTSubject
 
     public function getAuthIdentifierName()
     {
-        return 'username';
+        return 'email';
     }
 
-    public function getJWTIdentifier()
+    public function setPasswordAttribute($value)
     {
-        return $this->getKey(); 
-    }
-
-    public function getJWTCustomClaims()
-    {
-        return []; 
+        $this->attributes['password'] = Hash::make($value);
     }
 }

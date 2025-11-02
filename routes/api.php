@@ -1,18 +1,16 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PembelianController;
 
-
 Route::post('/register', [UserController::class, 'registrasi']); 
 Route::post('/login', [UserController::class, 'login']);       
 
+Route::middleware('auth:sanctum')->group(function () {
 
-// Route::middleware('auth.jwt')->group(function () {
-
+    // USER
     Route::get('/list-user', [UserController::class, 'listUser']);       
     Route::put('/update-user-by/{id}', [UserController::class, 'update']);
     Route::delete('/delete-user-by/{id}', [UserController::class, 'hapus']); 
@@ -32,4 +30,4 @@ Route::post('/login', [UserController::class, 'login']);
     Route::put('/pembelian/{id}', [PembelianController::class, 'update']);
     Route::delete('/pembelian/{id}', [PembelianController::class, 'hapus']);
     Route::get('/report/pembelian', [PembelianController::class, 'report']);
-// });
+});
