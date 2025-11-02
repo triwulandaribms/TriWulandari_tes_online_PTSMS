@@ -10,27 +10,68 @@ use Illuminate\Support\Facades\Validator;
 
 class PembelianController extends Controller
 {
-
     public function tampilAll(){
-
-        $data = Pembelian::with('details.barang')->whereNull('deleted_at')->get();
-
-        return $data->isEmpty()
-            ? response()->json(['message' => 'Data pembelian tidak ditemukan'], 404)
-            : response()->json(['status' => 'success', 'data' => $data]);
+        try {
+            $data = Pembelian::with('details.barang')
+                ->whereNull('deleted_at')
+                ->get();
+    
+            if ($data->isEmpty()) {
+                return response()->json([
+                    'message' => 'Data pembelian tidak ditemukan'
+                ], 404);
+            }
+    
+            $data->each(function ($pembelian) {
+                $pembelian->details->each(function ($detail) {
+                    unset($detail->kode_barang);
+                    unset($detail->harga);
+                });
+            });
+    
+            return response()->json([
+                'status' => 'success',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat mengambil data pembelian',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    
     }
 
-    
     public function tampil($id){
-
-        $pembelian = Pembelian::with('details.barang')
-            ->where('id', $id)
-            ->whereNull('deleted_at')
-            ->first();
-
-        return !$pembelian
-            ? response()->json([ 'message' => 'Data pembelian tidak ditemukan'], 404)
-            : response()->json(['status' => 'success', 'data' => $pembelian]);
+        try {
+            $pembelian = Pembelian::with('details.barang')
+                ->where('id', $id)
+                ->whereNull('deleted_at')
+                ->first();
+    
+            if (!$pembelian) {
+                return response()->json([
+                    'message' => 'Data pembelian tidak ditemukan'
+                ], 404);
+            }
+    
+            $pembelian->details->each(function ($detail) {
+                unset($detail->kode_barang);
+                unset($detail->harga);
+            });
+    
+            return response()->json([
+                'status' => 'success',
+                'data' => [$pembelian]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat mengambil data pembelian',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
 
