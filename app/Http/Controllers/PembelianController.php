@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class PembelianController extends Controller
 {
+    
     public function tampilAll(){
         try {
             $data = Pembelian::with('details.barang')
@@ -73,7 +74,6 @@ class PembelianController extends Controller
             ], 500);
         }
     }
-
 
     public function tambah(Request $request){
 
