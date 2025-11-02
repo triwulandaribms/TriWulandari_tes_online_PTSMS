@@ -8,7 +8,7 @@ use App\Http\Controllers\PembelianController;
 Route::post('/register', [UserController::class, 'registrasi']); 
 Route::post('/login', [UserController::class, 'login']);       
 
-Route::middleware(['auth:sanctum', 'check.sanctum.token'])->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/list-user', [UserController::class, 'listUser']);       
     Route::put('/update-user-by/{id}', [UserController::class, 'update']);
@@ -28,4 +28,3 @@ Route::middleware(['auth:sanctum', 'check.sanctum.token'])->group(function () {
     Route::delete('/pembelian/{id}', [PembelianController::class, 'hapus']);
     Route::get('/report/pembelian', [PembelianController::class, 'report']);
 });
-

@@ -8,12 +8,21 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckSanctumToken
 {
-    public function handle(Request $request, Closure $next)
-    {
-        if (! $request->bearerToken() || ! Auth::guard('sanctum')->check()) {
+    public function handle(Request $request, Closure $next){
+        
+        $token = $request->bearerToken();
+
+        if (!$token) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Mohon login dulu atau masukkan token yang valid.'
+                'message' => 'Mohon masukkan token.'
+            ], 401);
+        }
+
+        if (!Auth::guard('sanctum')->check()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Token tidak valid.'
             ], 401);
         }
 

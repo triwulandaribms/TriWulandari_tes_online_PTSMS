@@ -20,7 +20,8 @@ class UserController extends Controller
                 'data' => $users->map(fn($user) => [
                     'id' => $user->id,
                     'username' => $user->username,
-                    'email' =>$user->email
+                    'email' =>$user->email,
+                    'tanggal_lahir'=>$user->tanggal_lahir->format('Y-m-d')
                 ]),
             ]);
         } catch (\Exception $e) {

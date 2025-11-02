@@ -43,7 +43,7 @@ class PembelianController extends Controller
         }
     
     }
-
+    
     public function tampil($id){
         try {
             $pembelian = Pembelian::with('details.barang')
@@ -77,7 +77,7 @@ class PembelianController extends Controller
 
     public function tambah(Request $request){
 
-        $validator = Validator::make($request->all(), [
+       $validasi = Validator::make($request->all(), [
             'tanggal' => 'required|date',
             'keterangan' => 'required|string',
             'details' => 'required|array|min:1',
@@ -86,10 +86,10 @@ class PembelianController extends Controller
             'details.*.harga' => 'required|numeric|min:0'
         ]);
     
-        if ($validator->fails()) {
+        if ($validasi->fails()) {
             return response()->json([
                 'status' => 'error',
-                'message' => $validator->errors()->first()
+                'message' =>$validasi->errors()->first()
             ], 400);
         }
 
@@ -152,10 +152,9 @@ class PembelianController extends Controller
         }
     }
 
-
     public function update(Request $request, $id){
         
-        $validator = Validator::make($request->all(), [
+       $validasi = Validator::make($request->all(), [
             'tanggal' => 'required|date',
             'keterangan' => 'required|string',
             'details' => 'required|array|min:1',
@@ -167,7 +166,7 @@ class PembelianController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
-                'message' => $validator->errors()->first()
+                'message' =>$validasi->errors()->first()
             ], 400);
         }
     
@@ -238,21 +237,36 @@ class PembelianController extends Controller
         }
     }
 
-    
     public function hapus($id){
-
-        $pembelian = Pembelian::where('id', $id)->whereNull('deleted_at')->first();
-
-        if (!$pembelian) {
-            return response()->json(['status' => 'error', 'message' => 'Data pembelian tidak ditemukan'], 404);
+        try {
+            $pembelian = Pembelian::where('id', $id)
+                                  ->whereNull('deleted_at')
+                                  ->first();
+    
+            if (!$pembelian) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Data pembelian tidak ditemukan'
+                ], 404);
+            }
+    
+            $pembelian->delete();
+    
+            if ($pembelian->details()->exists()) {
+                $pembelian->details()->delete();
+            }
+    
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Pembelian berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
         }
-
-        $pembelian->delete();
-        $pembelian->details()->delete();
-
-        return response()->json(['status' => 'success', 'message' => 'Pembelian berhasil dihapus']);
     }
-   
 
     public function report(Request $request){
 
