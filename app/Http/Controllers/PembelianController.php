@@ -268,55 +268,39 @@ class PembelianController extends Controller
         }
     }
 
-    public function report(Request $request){
-
+    public function report(Request $request)
+    {
         $tanggal = $request->query('tanggal');
         $kode_barang = $request->query('kode_barang');
     
-        $query = DB::table('tbl_pembelian_detail as d')
-            ->join('tbl_pembelian as p', 'd.pembelian_id', '=', 'p.id')
-            ->join('tbl_barang as b', 'd.kode_barang', '=', 'b.id') 
-            ->select(
-                'p.tanggal',
-                'b.kode_barang',
-                'b.nama_barang',
-                'd.harga as harga_satuan',
-                DB::raw('SUM(d.qty) as total_qty'),
-                DB::raw('SUM(d.harga * d.qty) as total_harga')
-            )
-            ->whereNull('p.deleted_at')
-            ->whereNull('d.deleted_at')
-            ->groupBy('p.tanggal', 'b.kode_barang', 'b.nama_barang', 'd.harga');
+        try {
+            $data = DB::select(
+                'SELECT * FROM sp_report_pembelian(:tanggal, :kode_barang)',
+                [
+                    'tanggal' => $tanggal,
+                    'kode_barang' => $kode_barang
+                ]
+            );
     
-        if (!empty($tanggal)) {
-            $query->whereDate('p.tanggal', $tanggal);
-        }
+            if (empty($data)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Data tidak ditemukan'
+                ], 404);
+            }
     
-        if (!empty($kode_barang)) {
-            $query->where('b.kode_barang', $kode_barang);
-        }
-    
-        $data = $query->get()->map(function ($item) {
-            return [
-                'tanggal' => $item->tanggal,
-                'kode_barang' => $item->kode_barang,
-                'nama_barang' => $item->nama_barang,
-                'harga_satuan' => (float) $item->harga_satuan,
-                'total_qty' => (int) $item->total_qty,
-                'total_harga' => (float) $item->total_harga,
-            ];
-        });
-    
-        if ($data->isEmpty()) {
             return response()->json([
-                'message' => 'Data tidak ditemukan'
-            ], 404);
+                'status' => 'success',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat memanggil laporan',
+                'error' => $e->getMessage()
+            ], 500);
         }
-    
-        return response()->json([
-            'status' => 'success',
-            'data' => $data
-        ]);
     }
+    
 
 }

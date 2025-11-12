@@ -17,28 +17,43 @@
 
 @push('scripts')
 <script>
-document.getElementById("reportForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const token = localStorage.getItem("token");
-  const tanggal = document.getElementById("tanggal").value;
-  const kode_barang = document.getElementById("kode_barang").value;
-
-  const res = await axios.get("/api/report", {
-    params: { tanggal, kode_barang },
-    headers: { Authorization: `Bearer ${token}` }
-  });
-
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("reportForm");
   const tbody = document.getElementById("reportTable");
-  tbody.innerHTML = "";
-  res.data.data.forEach(r => {
-    const row = `<tr>
-      <td>${r.tanggal}</td>
-      <td>${r.kode_barang}</td>
-      <td>${r.nama_barang}</td>
-      <td>${r.total_qty}</td>
-      <td>${r.total_harga}</td>
-    </tr>`;
-    tbody.insertAdjacentHTML("beforeend", row);
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    const tanggal = document.getElementById("tanggal").value;
+    const kode_barang = document.getElementById("kode_barang").value;
+
+    try {
+      const url = new URL("/api/report", window.location.origin);
+      if (tanggal) url.searchParams.append("tanggal", tanggal);
+      if (kode_barang) url.searchParams.append("kode_barang", kode_barang);
+
+      const res = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Gagal memuat laporan");
+
+      tbody.innerHTML = "";
+      data.data.forEach((r) => {
+        const row = `
+          <tr>
+            <td>${r.tanggal}</td>
+            <td>${r.kode_barang}</td>
+            <td>${r.nama_barang}</td>
+            <td>${r.total_qty}</td>
+            <td>${r.total_harga}</td>
+          </tr>`;
+        tbody.insertAdjacentHTML("beforeend", row);
+      });
+    } catch (err) {
+      alert(err.message);
+    }
   });
 });
 </script>

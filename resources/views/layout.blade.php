@@ -12,8 +12,7 @@
     <header>
       <h1>Laravel AJAX App</h1>
       <nav>
-        <a href="/products">Produk</a>
-        <a href="/categories">Kategori</a>
+        <a href="/barang">Barang</a>
         <a href="/pembelian/form">Pembelian</a>
       </nav>
     </header>
