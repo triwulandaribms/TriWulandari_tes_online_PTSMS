@@ -1,22 +1,44 @@
 ## TES ONLINE PROGRAMMER - PT SMS
 
  Cara menjalankan projek :
+ 
  1. git clone repository terlebih dahulu :
     - https://github.com/triwulandaribms/TriWulandari_tes_online_PTSMS
-  
- 2. jika belum membuat model dan melakukan migration :
-    -  php artisan make:model namaModel
-    -  php artisan make:migration namaModel
-    -  php artisan migrate
-
- 3. lalu jalankan perintah :
+    ```bash
+      cd mini_project
+    ```
+ 2. install depedencies
+    ```bash
+      composer install
+    ```
+ 3. Salin file .env.example menjadi .env :
+   ```bash
+      cp .env.example .env
+   ```
+ 4. generate application key :
+   ```bash
+    php artisan key:generate
+   ```
+ 5. Atur konfigurasi database di file .env
+   
+ 6. jika belum membuat model dan melakukan migration :
+    -  ```bash
+         php artisan make:model namaModel
+       ```
+    -  ```bash
+         php artisan make:migration namaModel
+       ```
+    -  ```bash 
+         php artisan migrate
+       ```
+ 7. lalu jalankan server :
     - php artisan serve
   
- 4. lalu hit endpoint untuk registrasi
+ 8. lalu hit endpoint untuk registrasi
    
- 5. setelah itu hit endpoint login untuk mendapatkan token
+ 9.  setelah itu hit endpoint login untuk mendapatkan token
    
- 6. selanjutnya ketika akan hit endpoint barang dan pembelian serta list, update dan hapus user :
+ 10. selanjutnya ketika akan hit endpoint barang dan pembelian serta list, update dan hapus user :
      - harus memasukan token terlebih dahulu 
      - dengan klik ke menu authorization pada postman
      - lalu auth type pilih Bearer Token

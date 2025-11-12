@@ -4,12 +4,12 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class CheckSanctumToken
 {
-    public function handle(Request $request, Closure $next){
-        
+    public function handle(Request $request, Closure $next)
+    {
         $token = $request->bearerToken();
 
         if (!$token) {
@@ -19,12 +19,19 @@ class CheckSanctumToken
             ], 401);
         }
 
-        if (!Auth::guard('sanctum')->check()) {
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if (!$accessToken) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Token tidak valid.'
             ], 401);
         }
+
+        // Set user agar bisa diakses pakai auth()->user()
+        $request->setUserResolver(function () use ($accessToken) {
+            return $accessToken->tokenable;
+        });
 
         return $next($request);
     }
