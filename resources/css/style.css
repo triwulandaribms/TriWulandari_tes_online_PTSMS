@@ -1,0 +1,256 @@
+/* === Global Reset === */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", Arial, sans-serif;
+  }
+  
+  body {
+    background-color: #f6f7fb;
+    color: #333;
+    line-height: 1.6;
+    font-size: 16px;
+  }
+  
+  /* === Layout === */
+  .container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  header h1 {
+    color: #2b3a67;
+    font-size: 1.8rem;
+  }
+  
+  nav a {
+    color: #2b3a67;
+    text-decoration: none;
+    margin-right: 1rem;
+    font-weight: 500;
+    transition: 0.2s ease;
+  }
+  
+  nav a:hover {
+    color: #007bff;
+  }
+  
+  /* === Buttons === */
+  button,
+  .btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  button:hover,
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+  }
+  
+  .btn-danger:hover {
+    background-color: #b02a37;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+  }
+  
+  .btn-success:hover {
+    background-color: #1e7e34;
+  }
+  
+  /* === Tables === */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+  }
+  
+  th,
+  td {
+    border: 1px solid #e1e1e1;
+    padding: 0.6rem;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f0f3f9;
+    color: #333;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  
+  td button {
+    margin-right: 5px;
+  }
+  
+  /* === Forms === */
+  form label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 600;
+    color: #2b3a67;
+  }
+  
+  form input[type="text"],
+  form input[type="date"],
+  form input[type="number"],
+  form input[type="file"],
+  form select,
+  form textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 0.3rem;
+    font-size: 1rem;
+  }
+  
+  form input:focus,
+  form textarea:focus,
+  form select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  /* === Alerts & Messages === */
+  .alert {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+  
+  .alert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+  }
+  
+  .alert-error {
+    background-color: #f8d7da;
+    color: #842029;
+  }
+  
+  /* === Product & Category Cards === */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .card-body h4 {
+    font-size: 1.1rem;
+    color: #2b3a67;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-body p {
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-body .price {
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  /* === Pembelian Form === */
+  #pembelianForm table {
+    margin-bottom: 1rem;
+  }
+  
+  #pembelianForm h4 {
+    margin-top: 1rem;
+    color: #2b3a67;
+  }
+  
+  #pembelianForm button[type="submit"] {
+    background-color: #28a745;
+    font-size: 1rem;
+  }
+  
+  #pembelianForm #addBarangBtn {
+    margin-top: 0.5rem;
+    background-color: #17a2b8;
+  }
+  
+  #pembelianForm #addBarangBtn:hover {
+    background-color: #117a8b;
+  }
+  
+  #totalHarga {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #007bff;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      width: 95%;
+      padding: 1.2rem;
+    }
+  
+    header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    nav a {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+  
+    table th, table td {
+      font-size: 0.85rem;
+    }
+  }
+  
